@@ -9,7 +9,7 @@ import android.view.ViewGroup
  * @since: 2018-02-28.
  */
 abstract class RecycleBaseAdapter<T : BaseHolder, V> : RecyclerView.Adapter<T>() {
-    var datas: List<V>? = null
+    var datas: MutableList<V>? = null
     var layout: Int = 0
     var haveHeader = false
     var haveFooter = false
