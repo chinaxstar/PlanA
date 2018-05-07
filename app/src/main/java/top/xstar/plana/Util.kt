@@ -18,11 +18,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-inline fun <T : TextView> RecyclerView.ViewHolder.find(id: Int): T {
+ fun <T : TextView> RecyclerView.ViewHolder.find(id: Int): T {
     return itemView.findViewById<T>(id) as T
 }
 
-inline fun Date.format(pattern: String): String {
+fun Date.format(pattern: String): String {
     val f = AppUtil.singleDateFormat(pattern)
     return f.format(this)
 }
@@ -116,7 +116,7 @@ object AppUtil {
     fun getTaskNextDate(task: TimeTask): Date {
         when (task.taskType) {
             TaskType.SINGLE -> {
-                return task.startDate
+                return task.startDate!!
             }
             TaskType.EVERYDAY -> {
                 val calendar = Calendar.getInstance()
@@ -131,7 +131,7 @@ object AppUtil {
                 return calendar.time
             }
             else ->{
-                return task.startDate
+                return task.startDate!!
             }
         }
     }
@@ -140,30 +140,32 @@ object AppUtil {
 object PrefsUtil {
     var prefs: SharedPreferences? = null
     var gson: Gson? = null
-    open fun init(context: Context) {
+    fun init(context: Context) {
         prefs = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
         gson = Gson()
     }
 
-    open fun <T> getObj(key: String, tClass: Class<T>): T {
+    fun <T> getObj(key: String, tClass: Class<T>): T {
         val json = prefs!!.getString(key, "{}")
         return gson!!.fromJson<T>(json, tClass)
     }
 
-    open fun <T> getObj(tClass: Class<T>): T {
+     fun <T> getObj(tClass: Class<T>): T {
         return getObj(tClass.name, tClass)
     }
 
-    open fun saveObj(key: String, obj: Any): Boolean {
+    fun saveObj(key: String, obj: Any): Boolean {
         val json = gson!!.toJson(obj)
         return prefs!!.edit().putString(key, json).commit()
     }
 
-    open fun saveObj(obj: Any): Boolean {
+     fun saveObj(obj: Any): Boolean {
         return saveObj(obj.javaClass.name, obj)
     }
 }
 
 open class BaseHolder(item: View) : RecyclerView.ViewHolder(item)
+
+
 
 

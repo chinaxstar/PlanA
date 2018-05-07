@@ -36,8 +36,9 @@ abstract class RecycleBaseAdapter<T : BaseHolder, V> : RecyclerView.Adapter<T>()
     open fun onBindHeader(holder: T, position: Int) {}
     open fun onBindFooter(holder: T, position: Int) {}
     var inflate: LayoutInflater? = null
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): T {
-        if (inflate == null) inflate = LayoutInflater.from(parent?.context)
+    @Suppress("UNCHECKED_CAST")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
+        if (inflate == null) inflate = LayoutInflater.from(parent.context)
         val temp = inflate!!.inflate(viewType, parent, false)
         return BaseHolder(temp) as T
     }
@@ -50,15 +51,15 @@ abstract class RecycleBaseAdapter<T : BaseHolder, V> : RecyclerView.Adapter<T>()
     }
 
     override fun getItemViewType(position: Int): Int {
-        var _layout: Int
+        val layoutTemp: Int
         if (haveHeader.and(position == 0)) {
-            _layout = headerLayout
+            layoutTemp = headerLayout
         } else if (haveFooter.and(position == itemCount - 1)) {
-            _layout = footerLayout
+            layoutTemp = footerLayout
         } else {
-            _layout = layout
+            layoutTemp = layout
         }
-        return _layout
+        return layoutTemp
     }
 
     interface OnItemClickListener<T, V> {

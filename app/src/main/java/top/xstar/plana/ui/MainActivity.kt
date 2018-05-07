@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.hwangjr.rxbus.RxBus
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 import top.xstar.plana.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,8 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
-        RxBus.get().register(this)
+        addTask.setOnClickListener { addTask() }
         recyclerView = findViewById<RecyclerView>(R.id.taskList)
         adapter = object : RecycleBaseAdapter<BaseHolder, TimeTask>() {
             init {
@@ -37,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView?.adapter = adapter
     }
 
-    @OnClick(R.id.addTask)
     fun addTask() {
         val intent = Intent(this, CreateTaskActivity::class.java)
         startActivity(intent)
@@ -47,10 +43,5 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         Realm.getDefaultInstance().copyFromRealm(adapter?.datas!!)
         adapter?.notifyDataSetChanged()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        RxBus.get().unregister(this)
     }
 }

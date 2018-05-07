@@ -18,9 +18,16 @@ import java.util.*
  * 开始时间 闹钟使用HH:MM
  * 精度 （分、时、日期）
  */
-data class TimeTask(var title: String, var description: String, var createDate: Date, var endDate: Date,
-                    var taskType: Int = TaskType.EVERYDAY, var startDate: Date,
-                    var accuracy: Int = TaskAccuracy.MINUTE, var days: IntArray) : RealmObject()
+open class TimeTask : RealmObject() {
+    var id: String = UUID.randomUUID().toString()
+    var title: String? = null
+    var description: String? = null
+    var createDate: Date? = null
+    var endDate: Date? = null
+    var taskType: Int = TaskType.EVERYDAY
+    var startDate: Date? = null
+    var accuracy: Int = TaskAccuracy.MINUTE
+}
 
 object TaskType {
     /**
