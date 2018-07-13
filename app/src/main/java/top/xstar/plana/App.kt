@@ -12,8 +12,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-        Realm.setDefaultConfiguration(RealmConfiguration.Builder().name("plana.db")
-                .schemaVersion(1).build())
-
+        val config=RealmConfiguration.Builder().name("plana.db")
+                .schemaVersion(1).build()
+        Realm.setDefaultConfiguration(config)
     }
 }

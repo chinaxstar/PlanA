@@ -1,6 +1,8 @@
 package top.xstar.plana
 
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 /**
@@ -9,56 +11,33 @@ import java.util.*
  */
 
 /**
- * 定时任务类
- * 任务标题
- * 任务描述
- * 任务创建时间
- * 任务结束时间
- * 任务类型
- * 开始时间 闹钟使用HH:MM
- * 精度 （分、时、日期）
+ *
+ * 备忘录
+ * content 备忘录内容 html
+ * 修改时间
+ * 提醒设置ID
  */
-open class TimeTask : RealmObject() {
-    var id: String = UUID.randomUUID().toString()
-    var title: String? = null
-    var description: String? = null
-    var createDate: Date? = null
-    var endDate: Date? = null
-    var taskType: Int = TaskType.EVERYDAY
-    var startDate: Date? = null
-    var accuracy: Int = TaskAccuracy.MINUTE
+open class Memo : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String? = null
+    var content: String? = null
+    var lastModifyTime: Long = 0
+    var noticeId: String? = null
 }
 
-object TaskType {
-    /**
-     * 一次
-     */
-    val SINGLE = 0
-    /**
-     * 工作日
-     */
-    val WORK = 1
-    /**
-     * 节假日
-     */
-    val HOLIDAY = 2
-    /**
-     * 每天
-     */
-    val EVERYDAY = 3
-    /**
-     * 每经过多少天
-     */
-    val NUMBERS = 4
-    /**
-     * 纪念日
-     */
-    val MEMORIALDAY = 5
-
+/**
+ * 提醒设置
+ * 一些备忘录内容需要提醒
+ * 开始日期
+ * 结束日期
+ * 间隔®
+ */
+open class NoticeSet : RealmObject(), Serializable {
+    @PrimaryKey
+    var id: String? = null
+    var startTime = 0L
+    var endTime = 0L
+    var itervalTime = 0L
 }
 
-object TaskAccuracy {
-    val MINUTE = 0
-    val HOUR = 0
-    val DAY = 0
-}
+

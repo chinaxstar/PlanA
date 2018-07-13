@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_size">17sp</dimen>
+    <dimen name="content_size">15sp</dimen>
+    <dimen name="small_size">13sp</dimen>
+    <dimen name="min_size">11sp</dimen>
+
+
+    <dimen name="lineTopBottomMargin">13dp</dimen>
+    <dimen name="lineLeftRightMargin">16dp</dimen>
+    <dimen name="lineSpace">10dp</dimen>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:id="@+id/toolbarLeftBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="@null"
+        android:textColor="@color/textWhite"
+        android:textSize="@dimen/content_size" />
+
+    <TextView
+
+        android:id="@+id/toolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/textWhite"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold"
+        tools:text="A 计划" />
+
+    <Button
+        android:id="@+id/toolbarRightBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@null"
+        android:textColor="@color/textWhite" />
+
+</android.support.v7.widget.Toolbar>
