@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.TextView
 import io.realm.Realm
 import io.realm.Sort
@@ -25,12 +26,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         addTask.setOnClickListener { addTask() }
-        realm= Realm.getDefaultInstance()
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+
+            }
+        })
+        touchHelper.attachToRecyclerView(taskList)
+        realm = Realm.getDefaultInstance()
         adapter = object : RecycleBaseAdapter<BaseHolder, Memo>() {
             init {
                 layout = R.layout.tasklist_item_layout
                 datas = ArrayList<Memo>()
+                itemClick = { v, i, e ->
+                    routeTo(CreateTaskActivity::class.java) {
+                        it.withFlag(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                .withExtra(Const.MEMO_KEY, datas!!.get(i).id)
+                    }
+                }
+                itemFling = { v, i, e1, e2, vx, vy ->
+                    val sx = e1.x - e2.x
+                    val sy = e1.y - e2.y
+                    logE(String.format("sx:%s sy:%s", sx, sy))
+                }
+
+                itemLongPress = { v, i, e ->
+                    touchHelper.startDrag(taskList.getChildViewHolder(v))
+                }
             }
+
 
             override fun onBindView(holder: BaseHolder, position: Int, data: Memo) {
                 holder.find<TextView>(R.id.task_description).text = data.content!!.lineSequence().first().trim()
@@ -39,13 +66,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         taskList.adapter = adapter
-        taskList.layoutManager=LinearLayoutManager(this)
-        taskList.itemAnimator=DefaultItemAnimator()
-        val decoration=DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
-        val divi=ColorDrawable(Color.GRAY)
+        adapter.bindItemListener(taskList)
+        taskList.layoutManager = LinearLayoutManager(this)
+        taskList.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator
+        val decoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        val divi = ColorDrawable(Color.GRAY)
         decoration.setDrawable(divi)
         taskList.addItemDecoration(decoration)
         toolbarTitle.setText(R.string.mainTitle)
+
     }
 
     fun addTask() {
@@ -57,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         realm.executeTransaction { it ->
-            val list=it.where(Memo::class.java).sort("lastModifyTime",Sort.DESCENDING).findAll()
+            val list = it.where(Memo::class.java).sort("lastModifyTime", Sort.DESCENDING).findAll()
                     .toList()
             adapter.datas!!.clear()
             adapter.datas!!.addAll(list)
@@ -69,4 +98,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         realm.close()
     }
+
 }
+
+

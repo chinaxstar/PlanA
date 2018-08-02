@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.51'
-    ext.realm_version = "5.3.1"
+    ext.realm_version = "5.4.0"
 
     repositories {
         google()

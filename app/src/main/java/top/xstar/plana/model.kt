@@ -22,7 +22,7 @@ open class Memo : RealmObject(), Serializable {
     var id: String? = null
     var content: String? = null
     var lastModifyTime: Long = 0
-    var noticeId: String? = null
+    var notice: NoticeSet? = null
 }
 
 /**
@@ -30,7 +30,7 @@ open class Memo : RealmObject(), Serializable {
  * 一些备忘录内容需要提醒
  * 开始日期
  * 结束日期
- * 间隔®
+ * 间隔
  */
 open class NoticeSet : RealmObject(), Serializable {
     @PrimaryKey
